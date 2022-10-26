@@ -1,0 +1,252 @@
+
+/**
+ * This is a utility class that encrypts and decrypts a phrase using two
+ * different approaches. The first approach is called the Caesar Cipher and is a
+ * simple �substitution cipher� where characters in a message are replaced by a
+ * substitute character. The second approach, due to Giovan Battista Bellaso,
+ * uses a key word, where each character in the word specifies the offset for
+ * the corresponding character in the message, with the key word wrapping around
+ * as needed.
+ * 
+ * @author Farnaz Eivazi
+ * @version 7/16/2022
+ */
+public class CryptoManager {
+	
+	private static final char LOWER_RANGE = 32;
+	private static final char UPPER_RANGE = 95;
+	private static final int RANGE = UPPER_RANGE - LOWER_RANGE + 1;
+
+	/**
+	 * This method determines if a string is within the allowable bounds of ASCII codes 
+	 * according to the LOWER_RANGE and UPPER_RANGE characters
+	 * @param plainText a string to be encrypted, if it is within the allowable bounds
+	 * @return true if all characters are within the allowable bounds, false if any character is outside
+	 */
+	public static boolean isStringInBounds (String plainText) 
+	{
+		{ 
+			//This part of the program trues to check wether each character in the plainText is in the range or not
+
+			//Loop will return false if one character is found out of the range
+
+			for(int i = 0;i < plainText.length(); i++)
+
+			{
+
+				if(plainText.charAt(i) < LOWER_RANGE || plainText.charAt(i) > UPPER_RANGE )
+
+			return false;
+
+			}
+
+			//If all the charactes are found within the range, return true
+
+			return true;
+
+			}
+	}
+
+	/**
+	 * Encrypts a string according to the Caesar Cipher.  The integer key specifies an offset
+	 * and each character in plainText is replaced by the character \"offset\" away from it 
+	 * @param plainText an uppercase string to be encrypted.
+	 * @param key an integer that specifies the offset of each character
+	 * @return the encrypted string
+	 */
+	public static String caesarEncryption(String plainText, int key) 
+	{
+		String encrypted = "";
+		
+		/*
+		 * IF the key is found to be greater than the desired range of the characters,
+		 * the range will be subtracted from the key until the is key
+		 * is found to be within the desirable range.
+		 */
+
+		if(key > RANGE)
+
+		{
+			while(key > UPPER_RANGE)
+
+				key = key - RANGE - 1;
+		}
+
+		//Character by character is subsituted by key positions away
+
+		for(int i=0;i<plainText.length();i++)
+
+		{
+			encrypted = encrypted + (char)(plainText.charAt(i) + key);
+		}
+
+		return encrypted;
+	}
+	
+	/**
+	 * Encrypts a string according the Bellaso Cipher.  Each character in plainText is offset 
+	 * according to the ASCII value of the corresponding character in bellasoStr, which is repeated
+	 * to correspond to the length of plainText
+	 * @param plainText an uppercase string to be encrypted.
+	 * @param bellasoStr an uppercase string that specifies the offsets, character by character.
+	 * @return the encrypted string
+	 */
+	public static String bellasoEncryption (String plainText, String bellasoStr) 
+	{
+		String key = "";
+		String encrypted = "";
+
+		// A key is created by extending the key string to the length of plain text
+
+		int j = 0;
+
+		while(key.length() != plainText.length())
+
+		{
+
+			key = key + bellasoStr.charAt(j);
+
+			j++;
+
+			if(j == bellasoStr.length())
+
+				j = 0;
+
+		}
+
+		//Encrypting the characters found in plainText
+
+		for(int i = 0; i < plainText.length(); i++)
+
+		{
+
+			int result = plainText.charAt(i) + key.charAt(i);
+			
+			/*
+			 * If the result does not fall within the range,
+			 * this program subracts from the range until
+			 * it arrives at an result that is 
+			 * within the allowable range.
+			 */
+			if(result > UPPER_RANGE)
+
+			{
+
+				while(result > UPPER_RANGE)
+
+					result = result - RANGE; //RANGE=95-32+1=64
+
+			}
+
+			//Encrypted character is added to the encrypted string
+
+			encrypted = encrypted + (char)result;
+
+		}
+
+		//Return the encrypted string.
+		return encrypted;
+	}
+	
+	/**
+	 * Decrypts a string according to the Caesar Cipher.  The integer key specifies an offset
+	 * and each character in encryptedText is replaced by the character \"offset\" characters before it.
+	 * This is the inverse of the encryptCaesar method.
+	 * @param encryptedText an encrypted string to be decrypted.
+	 * @param key an integer that specifies the offset of each character
+	 * @return the plain text string
+	 */
+	public static String caesarDecryption (String encryptedText, int key) 
+	{
+		String decrypted="";
+
+		/*
+		 * If the inputed key is greater than the range,
+		 * the range will be subtracted froom key until the key
+		 * falls within the requested range.
+		 */
+
+		if(key > RANGE)
+
+		{
+
+			while(key > UPPER_RANGE)
+
+				key = key - RANGE - 1;
+
+		}
+
+		//The opposite of encrypted Caesar
+
+		for(int i = 0; i < encryptedText.length(); i++)
+
+		{
+
+			decrypted = decrypted + (char)(encryptedText.charAt(i) - key);
+
+		}
+
+		//Decrypted string is returned
+
+		return decrypted; 
+	 }
+	
+	/**
+	 * Decrypts a string according the Bellaso Cipher.  Each character in encryptedText is replaced by
+	 * the character corresponding to the character in bellasoStr, which is repeated
+	 * to correspond to the length of plainText.  This is the inverse of the encryptBellaso method.
+	 * @param encryptedText an uppercase string to be encrypted.
+	 * @param bellasoStr an uppercase string that specifies the offsets, character by character.
+	 * @return the decrypted string
+	 */
+	public static String bellasoDecryption(String encryptedText, String bellasoStr) 
+	{
+		String key="";
+
+		String decrypted="";
+
+		int j=0;
+
+		//Key is created by extending the key's string to the length of plain text
+
+		while(key.length()!=encryptedText.length())
+
+		{
+
+			key=key+bellasoStr.charAt(j);
+
+			j++;
+
+			if(j == bellasoStr.length())
+
+				j=0;
+
+		}
+
+		//The inverse of Bellaso Encryption is done
+
+		for(int i = 0; i < encryptedText.length(); i++)
+
+		{
+
+			int result = encryptedText.charAt(i) - key.charAt(i);
+
+			if(result < LOWER_RANGE)
+
+			{
+
+				while(result < LOWER_RANGE)
+
+					result = result + RANGE; //RANGE=95-32+1=64
+
+			}
+
+			decrypted = decrypted + (char)result;
+
+		}
+
+		//Decrypted string is returned
+
+		return decrypted;
+	}
+}
