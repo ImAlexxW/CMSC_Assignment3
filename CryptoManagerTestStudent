@@ -1,0 +1,56 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class CryptoManagerTestStudent 
+{
+	
+		@Test
+		public void testStringInBounds() 
+		{
+			assertTrue(CryptoManager.isStringInBounds("COMMPUTER"));
+			assertTrue(CryptoManager.isStringInBounds("MATH IS HARD"));
+			assertFalse(CryptoManager.isStringInBounds("science"));
+		}
+
+		@Test
+		public void testEncryptCaesar() 
+		{
+			
+			assertEquals("DEF", CryptoManager.caesarEncryption("ABC", 3));
+			assertEquals("LTTIG^J", CryptoManager.caesarEncryption("GOODBYE", 5));
+			assertEquals("XHNJSHJ%HFS%GJ%MFWI", CryptoManager.caesarEncryption("SCIENCE CAN BE HARD", 5));
+			
+		}
+
+		@Test
+		public void testDecryptCaesar() 
+		{
+			assertEquals("FINISH HIM", CryptoManager.caesarDecryption("QTYT^S+STX", 11));
+			assertEquals("IS THIS WORKING", CryptoManager.caesarDecryption("PZ'[OPZ'^VYRPUN", 7));
+			assertEquals("I THINK IT IS", CryptoManager.caesarDecryption("L#WKLQN#LW#LV", 3));
+		}
+
+		@Test
+		public void testEncryptBellaso() 
+		{
+			assertEquals("'\\[('W^XUYT!2,HZ,QOYW4&$'MUP#YX4!*[", CryptoManager.bellasoEncryption("THIS PROGRAM WAS HARD TO FIGURE OUT", "STRUGGLING"));
+			assertEquals("SMQD(Q5*@J<", CryptoManager.bellasoEncryption("PLEASE WORK", "CALCULUS181"));
+			assertEquals("WU\\VR9F#N!RF88U-'HED", CryptoManager.bellasoEncryption("THIS IS ANOTHER TEST", "CMSC203"));
+
+		}
+
+		@Test
+		public void testDecryptBellaso() 
+		{
+			assertEquals("I LOVE SOCCER", CryptoManager.bellasoDecryption("J2_T$F,T!VHSS", "ARSENAL"));
+			assertEquals("HAPPY THANKSGIVING", CryptoManager.bellasoDecryption("KN#SKPGKN!NE7<YV!J", "CMSC203"));
+			assertEquals("THIS IS ANOTHER TEST", CryptoManager.bellasoDecryption("WU\\VR9F#N!RF88U-'HED", "CMSC203"));
+
+		}
+	
+
+}
